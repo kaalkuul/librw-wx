@@ -12,7 +12,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/extdeps/usr/local")
 
+set(librwwx_MAINPROJECT ON)
 if (NOT CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+    set(librwwx_MAINPROJECT OFF)
     message(STATUS "Project ${PROJECT_NAME} has a top-level one called [${CMAKE_PROJECT_NAME}].")
 else()
     message(STATUS "Project ${PROJECT_NAME} is a top-level one.")
@@ -23,6 +25,8 @@ else()
             "Please build external dependencies first." )
     endif()
 endif()
+
+option(LIBRWWX_INSTALL "Install librw-wx files" ${librwwx_MAINPROJECT})
 
 if (NOT TARGET OpenGL::OpenGL)
     find_package(OpenGL REQUIRED)
@@ -79,4 +83,7 @@ endif()
 
 # where to find our CMake modules
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-include(installing)
+
+if(LIBRWWX_INSTALL)
+    include(installing)
+endif()
